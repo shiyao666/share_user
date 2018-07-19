@@ -1,0 +1,178 @@
+/* reset */
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin:0;padding:0;box-sizing: border-box;} 
+body{    font-family: 'Helvetica Neue',Helvetica,Verdana,Arial,'Microsoft Yahei',SimSun,SimHei,sans-serif;font-size:14px;background:#fff;-webkit-text-size-adjust:100%;} 
+a{color:#2d374b;text-decoration:none} 
+em{font-style:normal} 
+li{list-style:none} 
+img{border:0;vertical-align:middle} 
+table{border-collapse:collapse;border-spacing:0} 
+p{word-wrap:break-word}
+
+@font-face{
+    font-family: icon;
+    src: url(csi.woff);
+}
+.max_box{
+    display: block;
+    background-image: url(yaoqing3.jpg);
+    background-color:#000;
+    background-repeat: repeat-y;
+    margin: auto;
+    height: 100%;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.logo{
+    padding:1rem;
+    display: block;
+    width: 150px;
+    height: 150px;
+ margin: auto;
+}
+.logo img{
+    display: block;
+    width: 100%;
+    margin: auto;
+}
+.banner{
+    display: block;
+    width: 80%;
+    margin: auto;
+
+    height: 30px;
+    margin-left: 17%;
+}
+.banner hr{
+    width: 20%;
+    height: 3px;
+    color: fff;
+    background: #fff;
+    float: left;
+    border-radius: 2px;
+}
+.banner span{
+    display: block;
+    width: 40%;
+    float: left;
+    font-size: 18px;
+    color: #fff;
+    position: relative;
+    text-align: center;
+ 
+    letter-spacing: 2px;
+}
+.banner2{
+  
+    text-align: center;
+}
+.banner2 h1{
+    font: 24px;
+    color: #e6e655;
+}
+.h1_2{
+    letter-spacing: 16px;
+    margin-left: 18px;
+}
+.div_3{
+    margin: 1rem auto;
+    width: 12em;
+}
+.div_3 span{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+}
+.span_1::before{
+    font-size: 18px;
+    font-family: icon;
+    content: '\e028';
+    color: #fff;
+    margin-right: 8px;
+}
+.span_2::before{
+    font-size: 18px;
+    font-family: icon;
+    content: '\e029';
+    color: #fff;
+    margin-right: 12px;
+}
+.span_3::before{
+    font-size: 18px;
+    font-family: icon;
+    content: '\e030';
+    color: #fff;
+    margin-right: 8px;
+}
+.form{
+    display: block;
+    padding: 0 1rem;
+}
+.input_group{
+    margin-bottom: 0.5rem;
+}
+ input{
+    display: block;
+    width: 100%;
+    height: 2rem;
+    border: 0;
+    color: #5e5e5d;
+    padding: 0 0 0 2rem;
+    border-radius: 2px;
+    outline: none;
+    font-size: 1rem;
+}
+.form .user::before{
+    font-size: 20px;
+    font-family: icon;
+    content: '\e003';
+    color: #ddbc1b;
+    position: absolute;
+    margin:3px 0 0 3px;
+}
+.iphone,.idlogo1{
+}
+.iphone::before{
+    font-size: 20px;
+    font-family: icon;
+    content: '\e017';
+    color: #ddbc1b;
+    position: absolute;
+    margin:3px 0 0 3px;
+  
+}
+.idlogo1::before{
+    font-size: 18px;
+    font-family: icon;
+    content: '\e011';
+    color: #ddbc1b;
+    position: absolute;
+    margin:3px 0 0 3px;
+  
+}
+.submit1{
+    color: #3f3f3f;
+    background: #ddbc1b;
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.ames{
+    display: block;
+    float: right;
+    right: 0;
+    margin-top: -1.5rem;
+    margin-right: 1.5rem;
+    cursor: pointer;
+}
+.newform1{
+    color: rgb(221, 188, 27);
+    font-size: 48px;
+    text-align: center;
+    box-sizing: border-box;
+}
