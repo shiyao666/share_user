@@ -40,7 +40,7 @@ function check_other_char(name) {
     return false;
 }
 
-$("body").on("click",".ames",function click1(){ 
+$("body").on("click", ".ames", function click1() {
     var phonename = $("#name").val();
     var phone = $("#phone").val();
     $.ajax({
@@ -83,7 +83,7 @@ $("body").on("click",".ames",function click1(){
 });
 
 
-$(".submit1").bind("click",function sendMessage(){
+$(".submit1").bind("click", function sendMessage() {
 
     var uid = $('#phone').val();
     var idlogon = $('#idlogo').val();
@@ -102,7 +102,7 @@ $(".submit1").bind("click",function sendMessage(){
             if (msg.code == 10009) {
                 $(".form").empty();
                 $("#newform").addClass("newform1"),
-                $("#newform").append("报名成功")
+                    $("#newform").append("报名成功")
             }
             alert(msg.message);
         }
@@ -132,7 +132,8 @@ function getCookie(c_name) {
     }
     return ""
 }
-
+var token=null;
+var share_id;
 $(document).ready(function () {
 
     setTimeout(function () {
@@ -152,6 +153,7 @@ $(document).ready(function () {
             success: function (msg) {
                 //
                 setCookie("token", msg.token);
+                setCookie("share_id", msg.share_id);
                 // document.cookie = "token=" + msg.token + "; expire=" + exp.toGMTString();
 
             }
@@ -159,3 +161,49 @@ $(document).ready(function () {
         });
     }, 5300);
 });
+
+$("body").on("click", ".share_else", function share_a() {
+    console.log(token)
+    if (token!== null) {
+        $.ajax({
+            url: "",
+            type: "post",
+            data: {
+                "share_id": share_id,
+
+            },
+            async: true,
+            success: function (result) {
+
+                if ($(".user") !== null && $("#phone") !== null && $(".id_logo1") !== null) {
+                    $(".share_else").attr("href", "www.?" + share_id)
+                } else {
+                    alert("请填写用户信息");
+                }
+            },
+            error: function () {
+                return false;
+            }
+        });
+    } else {
+        alert("请填写完表单");
+    }
+});
+
+$(function () {
+    $('.form').bind('.share_else', "click", function () {
+        var i = 0;
+        $("input").each(function () {
+            var vl = $(this).val();
+            if (vl == "") {
+                i = 1;
+            }
+        });
+        if (i == 1) {
+            alert('请将信息填写完整');
+            return false;
+        }
+    });
+
+});
+

@@ -15,7 +15,6 @@ p{word-wrap:break-word}
 .max_box{
     display: block;
     background-image: url(yaoqing3.jpg);
-    background-color:#000;
     background-repeat: repeat-y;
     margin: auto;
     height: 100%;
@@ -47,8 +46,7 @@ p{word-wrap:break-word}
 }
 .banner hr{
     width: 20%;
-    height: 3px;
-    color: fff;
+    color: #fff;
     background: #fff;
     float: left;
     border-radius: 2px;
@@ -58,6 +56,7 @@ p{word-wrap:break-word}
     width: 40%;
     float: left;
     font-size: 18px;
+    line-height: 18px;
     color: #fff;
     position: relative;
     text-align: center;
@@ -85,6 +84,9 @@ p{word-wrap:break-word}
     height: 30px;
     line-height: 30px;
     color: #fff;
+}
+.test_div3 span{
+    margin-left: 34px;
 }
 .span_1::before{
     font-size: 18px;
@@ -136,12 +138,12 @@ p{word-wrap:break-word}
 .iphone,.idlogo1{
 }
 .iphone::before{
-    font-size: 20px;
+    font-size: 24px;
     font-family: icon;
     content: '\e017';
     color: #ddbc1b;
     position: absolute;
-    margin:3px 0 0 3px;
+    margin:2px 0 0 6px;
   
 }
 .idlogo1::before{
@@ -160,19 +162,87 @@ p{word-wrap:break-word}
     display: block;
     padding: 0.5rem;
     text-align: center;
+    width: 66%;
+    float: left;
+}
+.share_else{
+    float: left;
+    height: 2rem;
+    background: #ddbc1b;
+    width: 26%;
+    margin-left: 10px;
+    line-height: 2rem;
+    text-align: center;
 }
 
 .ames{
     display: block;
     float: right;
+    position: absolute;
     right: 0;
     margin-top: -1.5rem;
     margin-right: 1.5rem;
-    cursor: pointer;
 }
-.newform1{
-    color: rgb(221, 188, 27);
-    font-size: 48px;
+
+.share{
+    float: right;
+    width: 80px;
+    height: 60px; 
+    display: block;
+    font-size: 14px;
+ margin-right: 50px;
+
+
+}
+.share_a{
+    float: right;
+    width: 80px;
+    height: 60px; 
+    display: block;
+    font-size: 14px;
+
+   
+    background: #ccc;
+    border-radius: 6px;
     text-align: center;
-    box-sizing: border-box;
+}
+.i1001_put{
+    display: block;
+    width: 400px;
+    margin: auto;
+    text-align: center;
+    font: 18px "微软雅黑";
+    
+}
+.new_paasword{
+    display: block;
+    position: relative;
+    padding-bottom:8px;
+   
+}
+.renew_password{
+    position: relative;
+    display: block;
+    padding-bottom: 8px;
+}
+.new_paasword::before{
+    font-family: icon;
+    font-size: 18px;
+    content: "\e005";
+    color: #ddbc1b;
+    position: absolute; 
+    left: 4px;
+    top: 4px;
+}
+.renew_password::before{
+    font-family: icon;
+    font-size: 18px;
+    content: "\e005";
+    color: #ddbc1b;
+    position: absolute; 
+    left: 4px;
+    top: 4px;
+}
+.i1001_leftbox{
+    
 }

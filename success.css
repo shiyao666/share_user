@@ -1,0 +1,12 @@
+.share_else{
+    margin-left: 0;
+    width: 100%;
+}
+.scs1003_success{
+    float: left;
+    color: red;
+    width: 100%;
+    font: 20px "Microsoft Yahei";
+    text-align: center;
+    padding-bottom: 20px;
+}
