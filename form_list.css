@@ -1,0 +1,47 @@
+.fl1001_box{
+    display: block;
+    height: 100%;
+    margin: auto;
+    background: #e6e6e6;
+    padding: 50px 20px 50px 20px;
+}
+
+.fl1001_box span{
+
+    float: left;
+    height: 40px;
+    padding-left: 20px;
+    line-height: 40px;
+}
+.fl1001_box a{
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #333;
+    margin-right: 20px;
+    box-shadow:0px 0px 3px 3px rgba(0, 0, 0, 0.3);
+}
+.fl1001_id{
+    width: 120px;
+}
+.fl1001_name{
+    width: 200px;
+}
+.fl1001_time{
+    width: 160px;
+}
+.fl1001_place{
+    width: 200px;
+}
+.fl1001_city{
+    width: 80px;
+}
+.fl1001_count{
+    width: 80px;
+}
+.fl1001_info,.fl1001_edi,.fl1001_look{
+    width: 60px;
+    border-radius: 6px;
+}
