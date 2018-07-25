@@ -12,6 +12,31 @@
 </head>
 
 <body>
+    <input type="hidden" value="<?php $_GET['share_id'] ?>" id="s_share_id">
+    <div class='loader' id="loading1">
+        <div class='loader_overlay'></div>
+        <div class='loader_cogs'>
+            <div class='loader_cogs__top'>
+                <div class='top_part'></div>
+                <div class='top_part'></div>
+                <div class='top_part'></div>
+                <div class='top_hole'></div>
+            </div>
+            <div class='loader_cogs__left'>
+                <div class='left_part'></div>
+                <div class='left_part'></div>
+                <div class='left_part'></div>
+                <div class='left_hole'></div>
+            </div>
+            <div class='loader_cogs__bottom'>
+                <div class='bottom_part'></div>
+                <div class='bottom_part'></div>
+                <div class='bottom_part'></div>
+                <div class='bottom_hole'></div>
+            </div>
+            <p class="loading_p">loading...</p>
+        </div>
+    </div>
     <div class="max_box">
         <div class="logo">
             <img src="yaoqing06.png" alt="">
@@ -40,15 +65,46 @@
                 <span class="span_3">免费</span>
             </div>
         </div>
-        <div>
+        <div class="form1">
 
+            <div class="form" id="newform">
+                <div class="user input_group">
+                    <input type="text" id="name1" placeholder="姓名" class="user">
+                </div>
+                <div class="iphone input_group">
+                    <input type="text" id="phone1" placeholder="手机号">
+                    <a class="ames" href="#">获取验证码</a>
+                </div>
+
+                <div class="idlogo1 input_group">
+                    <input type="text" id="idlogo1" placeholder="验证码">
+
+                </div>
+
+                <a id="btnSendCode" href="#" class="submit1">点击报名</a>
+                <a href="#" class="share_else share_else1">分享预览</a>
+            </div>
+        </div>
+
+
+        <!-- <div class="share">
+            <a href="create_share.html" class="share_a">点击创建新的分享表单</a>
+        </div> -->
+        <div class="inv_success form2">
+
+            <div class="form" id="newform">
+                <span class="scs1003_success">报名成功</span>
+                <a href="#" class="success_share share_else share_else2">分享预览</a>
+            </div>
+        </div>
+        <div class="form3">
             <div class="form" id="newform">
                 <div class="user input_group">
                     <input type="text" id="name" placeholder="姓名" class="user">
                 </div>
                 <div class="iphone input_group">
                     <input type="text" id="phone" placeholder="手机号">
-                    <a class="ames" href="#">获取验证码</a>
+               
                 </div>
 
                 <div class="idlogo1 input_group">
@@ -57,16 +113,14 @@
                 </div>
 
                 <a id="btnSendCode" href="#" class="submit1">点击报名</a>
-                <a href="#" class="share_else">分享预览</a>
+                <a href="#" class="share_else2" >分享预览</a>
             </div>
         </div>
-        <!-- <div class="share">
-            <a href="create_share.html" class="share_a">点击创建新的分享表单</a>
-        </div> -->
     </div>
- 
+
 </body>
 <script src="post.js"></script>
 <!-- <script src="person_info.js"></script>
 <script src="share_page.js"></script> -->
+
 </html>
