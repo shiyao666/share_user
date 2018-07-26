@@ -500,6 +500,7 @@ body .loader_cogs__bottom div.bottom_hole {
   float: left;
     width: 60%;
     height: 35px;
+    color: red;
     background:#ddbc1b;
     text-align: center;
     line-height: 35px;
