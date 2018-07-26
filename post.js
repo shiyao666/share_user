@@ -32,16 +32,16 @@ var share_id1 = null
 $(document).ready(function () {
     token = getCookie("token");
     var url3 = window.location.href;
-    var str2 = url2.split("id=")[1];
-    if (str2 !== null) {
+    var share_id = url3.split("share_id=")[1];
+    if (share_id !== null) {
         $.ajax({
             type: 'POST',
             async: true,
             url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
             data: {
-                token: token,
-                "share_id": 4,
-                "id": str2
+                'token': token,
+                'share_id': share_id
+              
             },
             dataType: 'json',
 
@@ -53,8 +53,6 @@ $(document).ready(function () {
                 // if(msg.code==10002){}
                 id = msg.id;
                 name = msg.name;
-                $(".h1_1").html(msg.h1);
-                $(".h1_2").html(msg.h2);
                 if (msg.state == 1) {
                     $(".form2").show();
                     $(".form1").hide();
@@ -64,11 +62,18 @@ $(document).ready(function () {
                     console.log(msg.name)
 
                     s_phone = msg.phone;
-                } else {
+                } else if (msg.state == 2) {
+                    $(".form1").show();
+                    $(".form2").hide();
+                    $(".form3").hide();
+                } else if (msg.state == 3) {
                     $(".form1").show();
                     $(".form2").hide();
                     $(".form3").hide();
                 }
+                $(".h1_1").html(msg.h1);
+                $(".h1_2").html(msg.h2);
+
                 $("#loading1").remove();
                 $(".max_box").css("display", "block");
                 setCookie("token", msg.token);
@@ -81,7 +86,7 @@ $(document).ready(function () {
             url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
             data: {
                 token: token,
-                "share_id": 4,
+                "share_id": share_id,
             },
             dataType: 'json',
             error: function () {
@@ -91,21 +96,7 @@ $(document).ready(function () {
                 // if(msg.code==10002){}
                 id = msg.id;
                 name = msg.name;
-                $(".h1_1").html(msg.h1);
-                $(".h1_2").html(msg.h2);
-                if (msg.state == 1) {
-                    $(".form2").show();
-                    $(".form1").hide();
-                    $(".form3").hide();
-                    share_id = msg.share_id;
-                    id = msg.id;
-                    console.log(msg.name)
-                    s_phone = msg.phone;
-                } else {
-                    $(".form1").show();
-                    $(".form2").hide();
-                    $(".form3").hide();
-                }
+                is_state();
                 $("#loading1").remove();
                 $(".max_box").css("display", "block");
                 setCookie("token", msg.token);
@@ -117,7 +108,7 @@ $(document).ready(function () {
 //获取验证码
 $("body").on("click", ".ames", function click1() {
     var url1 = window.location.href;
-    var str = url1.split("id=")[1];
+    var str = url1.split("share_id=")[1];
     var phonename = $("#name1").val();
     var phone = $("#phone1").val();
     var idlogon = $('#idlogo1').val();
@@ -134,7 +125,24 @@ $("body").on("click", ".ames", function click1() {
         },
         dataType: 'json',
         success: function (msg) {
+            if (msg.state == 1) {
+                $(".form2").show();
+                $(".form1").hide();
+                $(".form3").hide();
+                share_id = msg.share_id;
+                id = msg.id;
+                console.log(msg.name)
 
+                s_phone = msg.phone;
+            } else if (msg.state == 2) {
+                $(".form1").show();
+                $(".form2").hide();
+                $(".form3").hide();
+            } else if (msg.state == 3) {
+                $(".form1").show();
+                $(".form2").hide();
+                $(".form3").hide();
+            }
             if (msg.code == 10005) {
                 var time1 = 60;
                 $(".ames").removeClass;
@@ -212,7 +220,7 @@ $("body").on("click", ".share_else", function share_a() {
         },
         async: false,
         success: function (msg) {
-            if (msg.code == 10013) {
+            if (msg.code == 10015) {
                 $(".form1").hide();
                 $(".form2").hide();
                 $(".form3").show();
@@ -220,7 +228,7 @@ $("body").on("click", ".share_else", function share_a() {
                 $(".submit1").css("width", "60%");
                 $(".yaoqing_span").html(msg.name + ",邀请您参加");
                 var url = $('url').value;
-                window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + id);
+                window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + msg.id);
             } else if (msg.code == 10014) {
                 alert(msg.message);
                 $(".form2").hide();
@@ -247,7 +255,7 @@ $("body").on("click", ".success_share", function share_a() {
         dataType: "json",
         data: {
             'id': id,
-            'name': name,
+            'name': phonename,
         },
         async: false,
         success: function (msg) {
@@ -256,9 +264,9 @@ $("body").on("click", ".success_share", function share_a() {
             $(".form3").show();
             $(".h1_1").css("margin-top", "20px");
             $(".submit1").css("width", "60%")
-            $(".yaoqing_span").html(name + ",邀请您参加");
+            $(".yaoqing_span").html(msg.name + ",邀请您参加");
             var url = $('url').value;
-            window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + id);
+            window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" +id);
             // window.location.href = "invite.html?" + share_id;     // $(".share_else").attr("href", "http://192.168.4.53/index.php?m=invform&c=phone&a=index?" + share_id)
         },
         error: function () {

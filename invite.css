@@ -78,7 +78,7 @@ body .loader_cogs__top div.top_part {
   border-radius: 10px;
   position: absolute;
   height: 100px;
-  background: #f98db9;
+  background: #135d9e;
 }
 body .loader_cogs__top div.top_hole {
   width: 50px;
@@ -168,7 +168,7 @@ body .loader_cogs__bottom div.bottom_part {
   border-radius: 5px;
   position: absolute;
   height: 60px;
-  background: #ffcd66;
+  background: #66a9ff;
 }
 body .loader_cogs__bottom div.bottom_hole {
   width: 30px;
@@ -497,13 +497,12 @@ body .loader_cogs__bottom div.bottom_hole {
     display: block;
 }
 .scs1003_success{
-  float: left;
-    width: 60%;
-    height: 35px;
-    color: red;
-    background:#ddbc1b;
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    padding:1rem;
+    color:#ddbc1b;
     text-align: center;
-    line-height: 35px;
 }
 .share_else2{
     float: right;
@@ -512,4 +511,7 @@ body .loader_cogs__bottom div.bottom_hole {
     line-height: 35px;
     background: #ddbc1b;
     text-align: center;
+}
+.success_share{
+    width: 100%;
 }
