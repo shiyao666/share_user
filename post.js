@@ -41,7 +41,7 @@ $(document).ready(function () {
             data: {
                 'token': token,
                 'share_id': share_id
-              
+
             },
             dataType: 'json',
 
@@ -96,7 +96,24 @@ $(document).ready(function () {
                 // if(msg.code==10002){}
                 id = msg.id;
                 name = msg.name;
-                is_state();
+                if (msg.state == 1) {
+                    $(".form2").show();
+                    $(".form1").hide();
+                    $(".form3").hide();
+                    share_id = msg.share_id;
+                    id = msg.id;
+                    console.log(msg.name)
+
+                    s_phone = msg.phone;
+                } else if (msg.state == 2) {
+                    $(".form1").show();
+                    $(".form2").hide();
+                    $(".form3").hide();
+                } else if (msg.state == 3) {
+                    $(".form1").show();
+                    $(".form2").hide();
+                    $(".form3").hide();
+                }
                 $("#loading1").remove();
                 $(".max_box").css("display", "block");
                 setCookie("token", msg.token);
@@ -216,10 +233,11 @@ $("body").on("click", ".share_else", function share_a() {
             'name': phonename,
             'idlogon': idlogon,
             'phone': phone,
-            "share_id": 4,
+
         },
-        async: false,
+        async: true,
         success: function (msg) {
+            id = msg.id;
             if (msg.code == 10015) {
                 $(".form1").hide();
                 $(".form2").hide();
@@ -266,7 +284,7 @@ $("body").on("click", ".success_share", function share_a() {
             $(".submit1").css("width", "60%")
             $(".yaoqing_span").html(msg.name + ",邀请您参加");
             var url = $('url').value;
-            window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" +id);
+            window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + id);
             // window.location.href = "invite.html?" + share_id;     // $(".share_else").attr("href", "http://192.168.4.53/index.php?m=invform&c=phone&a=index?" + share_id)
         },
         error: function () {
