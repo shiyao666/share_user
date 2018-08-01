@@ -14,18 +14,20 @@ function funceach(index1) {
         }
     });
 };
-var i = 1;
+var flbox_length = $(".fl1001_box").length;
+console.log(flbox_length);
 var list_array = [msg.data.id, msg.data.name, msg.start_time.time, msg.state.price, msg.state.city, msg.state.price];
 function list_each() {
 
-    $(".fl1001_bigbox").addClass("fl1001_box fl1001_box" + i++);
+    $(".fl1001_box").addClass("fl1001_box");
+    var fl1001_newid = $(".fl1001_box").attr("id", "flbox+" + flbox_length++)
     $.each(list_array, function () {
-        $(".fl1001_id").append('<span class="fl1001_id" >' + this[0] + "</span>");
-        $(".fl1001_name").append('<span class="fl1001_name" >' + this[1] + "</span>");
-        $(".fl1001_time").append('<span class="fl1001_time" >' + this[2] + "</span>");
-        $(".fl1001_place").append('<span class="fl1001_place" >' + this[3] + "</span>");
-        $(".fl1001_city").append('<span class="fl1001_city" >' + this[4] + "</span>");
-        $(".fl1001_count").append('<span class="fl1001_count" >' + this[5] + "</span>");
+        fl1001_newid.append('<span class="fl1001_id" >' + this[0] + "</span>");
+        fl1001_newid.append('<span class="fl1001_name" >' + this[1] + "</span>");
+        fl1001_newid.append('<span class="fl1001_time" >' + this[2] + "</span>");
+        fl1001_newid.append('<span class="fl1001_place" >' + this[3] + "</span>");
+        fl1001_newid.append('<span class="fl1001_city" >' + this[4] + "</span>");
+        fl1001_newid.append('<span class="fl1001_count" >' + this[5] + "</span>");
     })
 }
 // load登录页js
