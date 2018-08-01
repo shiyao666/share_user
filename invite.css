@@ -328,6 +328,7 @@ body .loader_cogs__bottom div.bottom_hole {
     height: 30px;
     line-height: 30px;
     color: #fff;
+    padding-left: 20px;
 }
 .test_div3 span{
     margin-left: 34px;
@@ -355,8 +356,9 @@ body .loader_cogs__bottom div.bottom_hole {
 }
 .form{
     display: block;
-    padding: 0 1rem;
+    padding: 0.1rem;
 }
+
 .input_group{
     margin-bottom: 0.5rem;
 }
@@ -370,6 +372,9 @@ body .loader_cogs__bottom div.bottom_hole {
     border-radius: 2px;
     outline: none;
     font-size: 1rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 .form .user::before{
     font-size: 20px;
@@ -380,6 +385,9 @@ body .loader_cogs__bottom div.bottom_hole {
     margin:3px 0 0 3px;
 }
 .iphone,.idlogo1{
+}
+#phone1{
+    padding-right: 100px;
 }
 .iphone::before{
     font-size: 24px;
@@ -409,21 +417,33 @@ body .loader_cogs__bottom div.bottom_hole {
     width: 66%;
     float: left;
 }
+.share_else_div1,.share_else_div2{
+    float: right;
+    width: 27%;
+    padding-left: 10px;
+}
 .share_else{
     float: right;
     height: 2.2rem;
     background: #ddbc1b;
-    width: 26%;
+    width: 100%;
     margin-left: 10px;
     line-height: 2.2rem;
     text-align: center;
 }
+@media screen and (min-width : 768px){
+    .form{
+        width: 400px;
+        margin: auto;
+    }
+    .share_else_div1,.share_else_div2{
+        width: 27%;
 
+    }
+}
 .ames{
 
     float: right;
-    position: absolute;
-    right: 0;
     margin-top: -1.5rem;
     margin-right: 1.5rem;
 }
@@ -506,7 +526,7 @@ body .loader_cogs__bottom div.bottom_hole {
 }
 .share_else2{
     float: right;
-    width: 30%;
+    width: 100%;
     height: 35px;
     line-height: 35px;
     background: #ddbc1b;

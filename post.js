@@ -1,4 +1,5 @@
-
+// 获取url以及数据的 array
+var address_data = new Array(["a", 2, "s"])
 // 获取token转化为cookie
 
 function setCookie(c_name, value, expiredays) {
@@ -21,14 +22,64 @@ function getCookie(c_name) {
     }
     return ""
 }
-
+// global var
 var token = null;
 var share_id = null;
 var id = null;
 var name = null;
 var title = null;
 var s_phone = null;
-var share_id1 = null
+var share_id1 = null;
+var form_id = null;
+var msg = null;
+var state = null;
+
+function getcommon(msg, lead, lead, start_time, address, price, content, data, state) {
+    if (JSON.stringify(msg.data.state) == 1) {
+        $(".form2").show();
+        $(".form1").hide();
+        $(".form3").hide();
+        share_id = msg.data.id;
+        id = msg.data.id;
+        s_phone = msg.data.phone;
+    } else if (JSON.stringify(msg.data.state) == 2) {
+        $(".form1").show();
+        $(".form2").hide();
+        $(".form3").hide();
+        if (msg.code == 10021) {
+            $('.yaoqing_span').html(JSON.stringify(msg.data.name) + "邀请你参加")
+        }
+        if (msg.code == 10022) {
+            $('.yaoqing_span').html(msg.data.lead)
+            $(".span_1").html(msg.data.start_time);
+            $(".span_2").html(msg.data.address);
+            $(".span_3").html(msg.data.price);
+            $(".content").html(msg.data.content)
+        }
+    } else if (JSON.stringify(msg.data.state) == 3) {
+        $(".form1").show();
+        $(".form2").hide();
+        $(".form3").hide();
+    }
+}
+function show1() {
+    $(".form1").show();
+    $(".form2").hide();
+    $(".form3").hide();
+
+}
+function show2() {
+    $(".form2").show();
+    $(".form1").hide();
+    $(".form3").hide();
+}
+
+function show3() {
+    $(".form1").css("display","none");
+    $(".form2").css("display","none");
+    $(".form3").css("display","block");
+}
+
 $(document).ready(function () {
     token = getCookie("token");
     var url3 = window.location.href;
@@ -40,7 +91,8 @@ $(document).ready(function () {
             url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
             data: {
                 'token': token,
-                'share_id': share_id
+                'share_id': share_id,
+                'form_id': 1,
 
             },
             dataType: 'json',
@@ -51,32 +103,15 @@ $(document).ready(function () {
             },
             success: function (msg) {
                 // if(msg.code==10002){}
-                id = msg.id;
-                name = msg.name;
-                if (msg.state == 1) {
-                    $(".form2").show();
-                    $(".form1").hide();
-                    $(".form3").hide();
-                    share_id = msg.share_id;
-                    id = msg.id;
-                    console.log(msg.name)
 
-                    s_phone = msg.phone;
-                } else if (msg.state == 2) {
-                    $(".form1").show();
-                    $(".form2").hide();
-                    $(".form3").hide();
-                } else if (msg.state == 3) {
-                    $(".form1").show();
-                    $(".form2").hide();
-                    $(".form3").hide();
-                }
-                $(".h1_1").html(msg.h1);
-                $(".h1_2").html(msg.h2);
-
+                id = msg.data.id;
+                name = JSON.stringify(msg.data.name);
+                getcommon(msg);
+                // $(".h1_1").html(msg.state.h1);
+                // $(".h1_2").html(msg.state.h2);
                 $("#loading1").remove();
                 $(".max_box").css("display", "block");
-                setCookie("token", msg.token);
+                setCookie("token", msg.data.token);
             }
         });
     } else {
@@ -85,8 +120,9 @@ $(document).ready(function () {
             async: true,
             url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
             data: {
-                token: token,
-                "share_id": share_id,
+                'token': token,
+                'share_id': share_id,
+                'form_id': 1
             },
             dataType: 'json',
             error: function () {
@@ -94,34 +130,23 @@ $(document).ready(function () {
             },
             success: function (msg) {
                 // if(msg.code==10002){}
-                id = msg.id;
-                name = msg.name;
-                if (msg.state == 1) {
-                    $(".form2").show();
-                    $(".form1").hide();
-                    $(".form3").hide();
-                    share_id = msg.share_id;
-                    id = msg.id;
-                    console.log(msg.name)
-
-                    s_phone = msg.phone;
-                } else if (msg.state == 2) {
-                    $(".form1").show();
-                    $(".form2").hide();
-                    $(".form3").hide();
-                } else if (msg.state == 3) {
-                    $(".form1").show();
-                    $(".form2").hide();
-                    $(".form3").hide();
-                }
+                id = msg.data.id;
+                name = JSON.stringify(msg.data.name);
+                getcommon(msg);
+                // $(".h1_1").html(msg.data.h1);
+                // $(".h1_2").html(msg.h2);
                 $("#loading1").remove();
                 $(".max_box").css("display", "block");
-                setCookie("token", msg.token);
+                setCookie("token", msg.data.token);
             }
         });
     }
 
 });
+function common() {
+    console.log("我是公共函数");
+}
+
 //获取验证码
 $("body").on("click", ".ames", function click1() {
     var url1 = window.location.href;
@@ -138,27 +163,29 @@ $("body").on("click", ".ames", function click1() {
             'name': phonename,
             'phone': phone,
             'token': token,
-            'share_id': str
+            'share_id': str,
+            'form_id': 1
+
         },
         dataType: 'json',
         success: function (msg) {
-            if (msg.state == 1) {
-                $(".form2").show();
-                $(".form1").hide();
-                $(".form3").hide();
-                share_id = msg.share_id;
-                id = msg.id;
-                console.log(msg.name)
+            if (msg.data != null) {
+                if (JSON.stringify(msg.data.state) == 1) {
+                    show2;
+                    getcommon(msg);
 
-                s_phone = msg.phone;
-            } else if (msg.state == 2) {
-                $(".form1").show();
-                $(".form2").hide();
-                $(".form3").hide();
-            } else if (msg.state == 3) {
-                $(".form1").show();
-                $(".form2").hide();
-                $(".form3").hide();
+                    share_id = msg.data.id;
+                    id = msg.data.id;
+                    s_phone = JSON.stringify(msg.data.phone);
+                }
+                else if (JSON.stringify(msg.data.state) == 2) {
+                    show1;
+
+                } else if (JSON.stringify(msg.data.state) == 3) {
+                    show3;
+                } else if (msg.code = 10003) {
+                    alert(msg.msg);
+                }
             }
             if (msg.code == 10005) {
                 var time1 = 60;
@@ -177,9 +204,9 @@ $("body").on("click", ".ames", function click1() {
                             clearInterval(setTime);
                         }
                     }, 1000);
-                alert(msg.message)
+                alert(msg.msg)
             } else if (token !== null) {
-                alert(msg.message);
+                alert(msg.msg);
                 return false;
             }
         },
@@ -190,10 +217,13 @@ $("body").on("click", ".ames", function click1() {
 });
 
 //点击报名
-$(".submit1").bind("click", function sendMessage() {
+$(".submit2").bind("click", function sendMessage() {
     var phonename = $("#phone1").val();
     var idlogon = $('#idlogo1').val();
     $.ajax({
+
+
+
         type: "post",
         dataType: "json",
         url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=logon',
@@ -201,18 +231,19 @@ $(".submit1").bind("click", function sendMessage() {
             "phone": phonename,
             "code": idlogon,
             "token": token,
+            'form_id': 1
         },
         error: function () {
             return false;
         },
         success: function (msg) {
             if (msg.code == 10009) {
-                id = msg.id;
-                name = msg.name;
+                id = msg.data.id;
+                name = JSON.stringify(msg.data.name);
                 $(".form1").hide();
                 $(".form2").show();
             }
-            alert(msg.message);
+            alert(msg.msg);
         }
     });
 });
@@ -233,26 +264,24 @@ $("body").on("click", ".share_else", function share_a() {
             'name': phonename,
             'idlogon': idlogon,
             'phone': phone,
-
+            'form_id': 1
         },
         async: true,
         success: function (msg) {
-            id = msg.id;
+            id = msg.data.id;
             if (msg.code == 10015) {
-                $(".form1").hide();
-                $(".form2").hide();
-                $(".form3").show();
+                show3;
                 $(".h1_1").css("margin-top", "20px");
-                $(".submit1").css("width", "60%");
-                $(".yaoqing_span").html(msg.name + ",邀请您参加");
+                $(".submit2").css("width", "60%");
+                $(".yaoqing_span").html(JSON.stringify(msg.data.name) + ",邀请您参加");
                 var url = $('url').value;
-                window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + msg.id);
+                window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + msg.data.id);
             } else if (msg.code == 10014) {
-                alert(msg.message);
+                alert(msg.msg);
                 $(".form2").hide();
                 $(".form3").css("display", "none");
             } else {
-                alert(msg.message)
+                alert(msg.msg)
             }
         },
         error: function () {
@@ -274,15 +303,15 @@ $("body").on("click", ".success_share", function share_a() {
         data: {
             'id': id,
             'name': phonename,
+            'form_id': 1
         },
         async: false,
         success: function (msg) {
-            $(".form1").hide();
-            $(".form2").hide();
-            $(".form3").show();
+            $('.form2').hide();
+            $('.form3').show();
             $(".h1_1").css("margin-top", "20px");
-            $(".submit1").css("width", "60%")
-            $(".yaoqing_span").html(msg.name + ",邀请您参加");
+            $(".submit2").css("width", "60%")
+            $(".yaoqing_span").html(msg.data.name + ",邀请您参加");
             var url = $('url').value;
             window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + id);
             // window.location.href = "invite.html?" + share_id;     // $(".share_else").attr("href", "http://192.168.4.53/index.php?m=invform&c=phone&a=index?" + share_id)
@@ -291,6 +320,5 @@ $("body").on("click", ".success_share", function share_a() {
             return false;
         }
     });
-
+  
 });
-

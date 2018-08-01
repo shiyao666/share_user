@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <title>JQuery的使用！！！</title>
+    <script src="jquery.min.js"></script>
+    <script>
+
+        $(function () {
+
+            //追加文本
+            $("#btn1").click(function () {
+                $("p").append("<b>这是追加的加粗的一句话。</b>");
+            });
+
+            //追加列表项
+            $("#btn2").click(function () {
+                $("ol").append("<li><b>List item new</b></li>");
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+    <p>这是一句段落。</p>
+    <p>这是另外一句段落。</p>
+    <ol>
+        <li>List item 1</li>
+        <li>List item 2</li>
+        <li>List item 3</li>
+    </ol>
+    <button id="btn1">追加文本</button>
+    <button id="btn2">追加列表项</button>
+</body>
+
+</html>
