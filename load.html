@@ -40,13 +40,13 @@
                     <span class="data1001_qiye">企业</span>
                     <span class="data1001_work">职务</span>
                 </div>
-                <div class="data1001_list">
-                    <span class="data1001_id">N</span>
+                <div class="data1001_list" id="data_list1">
+                    <span class="data1001_id" id="data_newid">N</span>
                     <span class="data1001_names">张三</span>
                     <span class="data1001_phone">13000011111</span>
                     <span class="data1001_qiye">中国移动</span>
                     <span class="data1001_work">经理</span>
-                    <a href="#">删除</a>
+                    <a href="#" class="data1001_dela" id="data1001_del1">删除</a>
                 </div>
             </div>
         </div>
@@ -66,7 +66,6 @@
                         <a href="#" class="fl1001_look">预览</a>
                     </div>
                 </div>
-                <div class="fl1001_box"></div>
             </div>
 
             <a href="#" class="fl1001_addinfo">新增+
@@ -137,30 +136,31 @@
 
                     <span class="span_3"></span>
                 </div>
+            </div>
+            <span class="left_content"></span>
+            <div class="form1">
 
-                <div class="form1">
+                <div class="form" id="newform">
+                    <div class="user input_group">
+                        <input type="text" id="name1" placeholder="姓名" class="user">
+                    </div>
+                    <div class="iphone input_group">
+                        <input type="text" id="phone1" placeholder="手机号">
+                        <a class="ames" href="#">获取验证码</a>
+                    </div>
 
-                    <div class="form" id="newform">
-                        <div class="user input_group">
-                            <input type="text" id="name1" placeholder="姓名" class="user">
-                        </div>
-                        <div class="iphone input_group">
-                            <input type="text" id="phone1" placeholder="手机号">
-                            <a class="ames" href="#">获取验证码</a>
-                        </div>
+                    <div class="idlogo1 input_group">
+                        <input type="text" id="idlogo1" placeholder="验证码">
 
-                        <div class="idlogo1 input_group">
-                            <input type="text" id="idlogo1" placeholder="验证码">
+                    </div>
 
-                        </div>
-
-                        <a id="btnSendCode" href="#" class="submit1">点击报名</a>
-                        <div class="share_else_div1">
-                            <a href="#" class="share_else share_else1">分享预览</a>
-                        </div>
+                    <a id="btnSendCode" href="#" class="submit1">点击报名</a>
+                    <div class="share_else_div1">
+                        <a href="#" class="share_else share_else1">分享预览</a>
                     </div>
                 </div>
             </div>
+
         </div>
         <div id="share1right_box">
             <div class="common_div">
@@ -215,7 +215,7 @@
         <div class="preview_top">
             <a href="#" id="preview_back">返回</a>
             <div class="preview_name">
-                <span>用户名</span>
+                <span class="preview_username">用户名</span>
             </div>
             <div class="preview_actname">
                 <span>活动名称</span>

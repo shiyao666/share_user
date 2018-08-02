@@ -182,8 +182,9 @@ p{word-wrap:break-word}
     }
     .fl1001_box a{
         float: left;
-        height: 40px;
-        line-height: 40px;
+        height: 34px;
+        margin-top: 8px;
+        line-height: 34px;
         text-align: center;
         text-decoration: none;
         border: 1px solid #333;
@@ -307,6 +308,23 @@ p{word-wrap:break-word}
         content: '\e030';
         color: #fff;
         margin-right: 8px;
+    }
+    .left_content{
+        display: block;
+        width: 200px;
+        height: 50px;
+        margin: auto;
+        padding-right: 10px;
+        text-align: center;
+        color:#fff;
+        font: 16px "Microsoft Yahei";
+        letter-spacing: 2px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+    .form1{
+      padding-left: 300px;
     }
     .form{
         display: block;
@@ -460,15 +478,6 @@ p{word-wrap:break-word}
         left: 4px;
         top: 4px;
     }
-    .i1001_leftbox{
-        
-    }
-    #max_box .off{
-        display: none;
-    }
-    .on{
-        display: block;
-    }
     .scs1003_success{
         display: block;
         font-size: 2rem;
@@ -494,7 +503,7 @@ p{word-wrap:break-word}
         padding: 0.1rem;
         margin: auto;
         height: 100%;
-        background: #ccc;
+        background: #e6e6e6;
         padding: 50px 15px 50px 18px;
     }
     .data1001_content{
@@ -535,12 +544,19 @@ p{word-wrap:break-word}
      
     }
     .data1001_list{
-        display: block;
-        padding-top: 100px;
-        width: 810px; 
-       
+        float: left;
+        margin-top: 30px;
+        width: 810px;
+        height: 100px;
+        line-height: 100px;
+        background: #e6e6e6;
        }
-    .data1001_id,.data1001_names,.data1001_phone,.data1001_qiye,.data1001_work{
+       .data1001_list span,.data1001_list a{
+  
+           text-align: center;
+
+       }
+    .data1001_id,.data1001_names,.data1001_phone,.data1001_qiye,.data1001_work,.data1001_dela{
        float: left;  
     }
     .data1001_id{
@@ -550,13 +566,20 @@ p{word-wrap:break-word}
         width:100px;
     }
     .data1001_phone{
-        width:200px;
+        width:170px;
     }
     .data1001_qiye{
         width:200px;
     }
     .data1001_work{
         width:200px;
+    }
+    .data1001_dela{
+        color: #fff;
+        background: rebeccapurple;
+        width: 40px;
+        border-radius: 10px;
+
     }
     /* 分享预览页面 */
 #preview_box{
@@ -753,6 +776,7 @@ p{word-wrap:break-word}
     position: absolute;
     margin:3px 0 0 3px;
 }
+
 @media screen and (max-width:768px){
     .preview_share{
         padding-left: 0;

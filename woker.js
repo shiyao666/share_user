@@ -16,9 +16,10 @@ function funceach(index1) {
 };
 var flbox_length = $(".fl1001_box").length;
 console.log(flbox_length);
-var list_array = [msg.data.id, msg.data.name, msg.start_time.time, msg.state.price, msg.state.city, msg.state.price];
-function list_each() {
 
+
+function list_each(msg) {
+    var list_array = [msg.data.id, msg.data.name, msg.data.start_time, msg.state.price, msg.state.city, msg.state.price];
     $(".fl1001_box").addClass("fl1001_box");
     var fl1001_newid = $(".fl1001_box").attr("id", "flbox+" + flbox_length++)
     $.each(list_array, function () {
@@ -28,6 +29,8 @@ function list_each() {
         fl1001_newid.append('<span class="fl1001_place" >' + this[3] + "</span>");
         fl1001_newid.append('<span class="fl1001_city" >' + this[4] + "</span>");
         fl1001_newid.append('<span class="fl1001_count" >' + this[5] + "</span>");
+        fl1001_newid.append('<a href="#" class="data1001_dela">删除</a>');
+        fl1001_newid.attr('id', flbox_length++)
     })
 }
 // load登录页js
@@ -59,7 +62,7 @@ $(".bm1001_submit").click(function () {
 
     }
 
-    checkval(user_name);
+
 
     $.ajax({
         type: 'post',
@@ -83,10 +86,6 @@ $(".bm1001_submit").click(function () {
             return false;
         }
     })
-
-})
-$('.bm1001_zhuce').click(function () {
-
 
 })
 
@@ -142,7 +141,7 @@ $("#input_name").bind('input propertychange', function () {
 });
 $("#input_phonenum").bind('input propertychange', function () {
     var title_top1 = $(this).val();
-    $("#phone").attr("placeholder", title_top1);
+    $("#phone1").attr("placeholder", title_top1);
 });
 $("#input_btn").bind('input propertychange', function () {
     var title_top1 = $(this).val();
@@ -152,18 +151,13 @@ $("#input_btn").bind('input propertychange', function () {
     var title_top1 = $(this).val();
     $(".submit1").html(title_top1);
 });
+$("#lines").bind('input propertychange', function () {
+    var title_top1 = $(this).val();
+    $(".left_content").html(title_top1);
+});
 
-
-
-
-
-
-
-var lead = $("#top_set").val();
-var price = $("#input_isfree").val();
-var start_time = $("#input_time").val();
-var adress = $("#input_place").val();
 $(".img_select").click(function () {
+
     $.ajax({
         type: 'post',
         async: true,
@@ -183,14 +177,11 @@ $(".img_select").click(function () {
 })
 $
 $("#save_revise").click(function () {
+    var lead = $("#top_set").val();
+    var price = $("#input_isfree").val();
+    var start_time = $("#input_time").val();
+    var adress = $("#input_place").val();
     funceach(2);
-    var creat_fl_names = $(".fl1001_name");
-    if (creat_fl_names) {
-        for (var i = 0; i < creat_fl_names.length; i++) {
-            var new_flnames = creat_fl_names[i];
-
-        }
-    }
     $.ajax({
         type: 'post',
         async: true,
@@ -228,4 +219,42 @@ $("#data1001_back").click(function () {
     funceach(2);
 })
 
+$("#data1001_del").click(function () {
+    var click_id = $(this).attr('id');
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
+        data: {
+            'del_id': click_id
+        },
+        success: function (msg) {
 
+        },
+        error: function () {
+            return false;
+        }
+    })
+})
+// 用户名获取
+$(document).ready(function () {
+    var data1001_UserName = $(".data1001_UserName").val();
+    var manager_name = $(".manager_name").val();
+    var preview_username = $(".preview_username").val();
+    $.ajax({
+        type: 'POSt',
+        dataType: 'json',
+        url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
+        data: {
+            'get': name
+        },
+        success: function (msg) {
+            data1001_UserName = msg.data.name;
+            manager_name = msg.data.name;
+            preview_username = msg.data.name;
+        },
+        error: function () {
+            return false;
+        }
+    })
+})

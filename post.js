@@ -35,28 +35,32 @@ var msg = null;
 var state = null;
 
 function getcommon(msg, lead, lead, start_time, address, price, content, data, state) {
-    if (JSON.stringify(msg.data.state) == 1) {
+    if (msg.data.state == 1) {
         $(".form2").show();
         $(".form1").hide();
         $(".form3").hide();
         share_id = msg.data.id;
         id = msg.data.id;
         s_phone = msg.data.phone;
-    } else if (JSON.stringify(msg.data.state) == 2) {
+    } else if (msg.data.state == 2) {
         $(".form1").show();
         $(".form2").hide();
-        $(".form3").hide();
+        $(".form3").hide(); 
         if (msg.code == 10021) {
-            $('.yaoqing_span').html(JSON.stringify(msg.data.name) + "邀请你参加")
-        }
-        if (msg.code == 10022) {
-            $('.yaoqing_span').html(msg.data.lead)
+            $('.yaoqing_span').html(msg.data.name + "邀请你参加");
             $(".span_1").html(msg.data.start_time);
             $(".span_2").html(msg.data.address);
             $(".span_3").html(msg.data.price);
             $(".content").html(msg.data.content)
         }
-    } else if (JSON.stringify(msg.data.state) == 3) {
+        if (msg.code == 10022) {
+            $('.yaoqing_span').html(msg.data.lead);
+            $(".span_1").html(msg.data.start_time);
+            $(".span_2").html(msg.data.address);
+            $(".span_3").html(msg.data.price);
+            $(".content").html(msg.data.content)
+        }
+    } else if (msg.data.state == 3) {
         $(".form1").show();
         $(".form2").hide();
         $(".form3").hide();
@@ -107,6 +111,7 @@ $(document).ready(function () {
                 id = msg.data.id;
                 name = JSON.stringify(msg.data.name);
                 getcommon(msg);
+                console.log("ww");
                 // $(".h1_1").html(msg.state.h1);
                 // $(".h1_2").html(msg.state.h2);
                 $("#loading1").remove();
@@ -129,10 +134,11 @@ $(document).ready(function () {
                 return false;
             },
             success: function (msg) {
+                console.log("null");
                 // if(msg.code==10002){}
                 id = msg.data.id;
                 name = JSON.stringify(msg.data.name);
-                getcommon(msg);
+                getcommon;
                 // $(".h1_1").html(msg.data.h1);
                 // $(".h1_2").html(msg.h2);
                 $("#loading1").remove();
@@ -172,7 +178,7 @@ $("body").on("click", ".ames", function click1() {
             if (msg.data != null) {
                 if (JSON.stringify(msg.data.state) == 1) {
                     show2;
-                    getcommon(msg);
+                    getcommon;
 
                     share_id = msg.data.id;
                     id = msg.data.id;
