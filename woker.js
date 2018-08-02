@@ -61,9 +61,6 @@ $(".bm1001_submit").click(function () {
         alert("密码长度不合法");
 
     }
-
-
-
     $.ajax({
         type: 'post',
         dataType: 'json',
@@ -208,8 +205,6 @@ $("#save_revise").click(function () {
     })
 });
 
-var iframeWindow = $(".h1_1").prop('contentWindow');
-var element = $(iframeWindow).find('.fl1001_name');
 // 预览页面
 $("#preview_back").click(function () {
     funceach(2);
@@ -241,6 +236,8 @@ $(document).ready(function () {
     var data1001_UserName = $(".data1001_UserName").val();
     var manager_name = $(".manager_name").val();
     var preview_username = $(".preview_username").val();
+    var data1001_ActiveName = $(".data1001_ActiveName").val();
+    var preview_actname_span = $(".preview_actname_span").val();
     $.ajax({
         type: 'POSt',
         dataType: 'json',
@@ -252,6 +249,8 @@ $(document).ready(function () {
             data1001_UserName = msg.data.name;
             manager_name = msg.data.name;
             preview_username = msg.data.name;
+            data1001_ActiveName = msg.data.actname;
+            preview_actname_span = msg.data.actname;
         },
         error: function () {
             return false;
