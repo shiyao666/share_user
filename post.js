@@ -33,19 +33,38 @@ var share_id1 = null;
 var form_id = null;
 var msg = null;
 var state = null;
+// 展示page1 隐藏其他
+function show1() {
+    $(".form1").show();
+    $(".form2").hide();
+    $(".form3").hide();
 
+}
+// 展示page2 隐藏其他
+function show2() {
+    console.log("dada");
+    $(".form2").show();
+    $(".form1").hide();
+    $(".form3").hide();
+
+}
+// 展示page3 隐藏其他
+function show3() {
+    $(".form1").css("display", "none");
+    $(".form2").css("display", "none");
+    $(".form3").css("display", "block");
+}
+// 后台获取data数据 common js
 function getcommon(msg, lead, lead, start_time, address, price, content, data, state) {
     if (msg.data.state == 1) {
-        $(".form2").show();
-        $(".form1").hide();
-        $(".form3").hide();
+        // 状态为1 显示page2 隐藏其他
+        show2();
         share_id = msg.data.id;
         id = msg.data.id;
         s_phone = msg.data.phone;
     } else if (msg.data.state == 2) {
-        $(".form1").show();
-        $(".form2").hide();
-        $(".form3").hide(); 
+        // 状态为2 显示page1 隐藏其他
+        show1();
         if (msg.code == 10021) {
             $('.yaoqing_span').html(msg.data.name + "邀请你参加");
             $(".span_1").html(msg.data.start_time);
@@ -61,34 +80,19 @@ function getcommon(msg, lead, lead, start_time, address, price, content, data, s
             $(".content").html(msg.data.content)
         }
     } else if (msg.data.state == 3) {
-        $(".form1").show();
-        $(".form2").hide();
-        $(".form3").hide();
+        // 状态为3 显示page3 隐藏其他
+        show3();
     }
 }
-function show1() {
-    $(".form1").show();
-    $(".form2").hide();
-    $(".form3").hide();
 
-}
-function show2() {
-    $(".form2").show();
-    $(".form1").hide();
-    $(".form3").hide();
-}
-
-function show3() {
-    $(".form1").css("display","none");
-    $(".form2").css("display","none");
-    $(".form3").css("display","block");
-}
-
+// 获取token发送给index
 $(document).ready(function () {
     token = getCookie("token");
     var url3 = window.location.href;
     var share_id = url3.split("share_id=")[1];
+    // if条件判断是否存在share_id 
     if (share_id !== null) {
+        // 存在share_id
         $.ajax({
             type: 'POST',
             async: true,
@@ -97,29 +101,22 @@ $(document).ready(function () {
                 'token': token,
                 'share_id': share_id,
                 'form_id': 1,
-
             },
             dataType: 'json',
-
             error: function () {
-
                 return false;
             },
             success: function (msg) {
-                // if(msg.code==10002){}
-
                 id = msg.data.id;
                 name = JSON.stringify(msg.data.name);
                 getcommon(msg);
-                console.log("ww");
-                // $(".h1_1").html(msg.state.h1);
-                // $(".h1_2").html(msg.state.h2);
                 $("#loading1").remove();
                 $(".max_box").css("display", "block");
                 setCookie("token", msg.data.token);
             }
         });
     } else {
+        // 不存在share_id
         $.ajax({
             type: 'POST',
             async: true,
@@ -134,13 +131,10 @@ $(document).ready(function () {
                 return false;
             },
             success: function (msg) {
-                console.log("null");
                 // if(msg.code==10002){}
                 id = msg.data.id;
                 name = JSON.stringify(msg.data.name);
-                getcommon;
-                // $(".h1_1").html(msg.data.h1);
-                // $(".h1_2").html(msg.h2);
+                getcommon(msg);
                 $("#loading1").remove();
                 $(".max_box").css("display", "block");
                 setCookie("token", msg.data.token);
@@ -149,10 +143,6 @@ $(document).ready(function () {
     }
 
 });
-function common() {
-    console.log("我是公共函数");
-}
-
 //获取验证码
 $("body").on("click", ".ames", function click1() {
     var url1 = window.location.href;
@@ -160,8 +150,8 @@ $("body").on("click", ".ames", function click1() {
     var phonename = $("#name1").val();
     var phone = $("#phone1").val();
     var idlogon = $('#idlogo1').val();
+    // 获取token
     token = getCookie("token");
-    // console.log(str);
     $.ajax({
         url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=send_mes',
         type: 'POST',
@@ -171,24 +161,22 @@ $("body").on("click", ".ames", function click1() {
             'token': token,
             'share_id': str,
             'form_id': 1
-
         },
         dataType: 'json',
         success: function (msg) {
             if (msg.data != null) {
-                if (JSON.stringify(msg.data.state) == 1) {
-                    show2;
-                    getcommon;
-
-                    share_id = msg.data.id;
-                    id = msg.data.id;
-                    s_phone = JSON.stringify(msg.data.phone);
+                if (msg.data.state == 1) {
+                    if (msg.code == 10004) {
+                        show2();
+                        share_id = msg.data.id;
+                        id = msg.data.id;
+                        s_phone = JSON.stringify(msg.data.phone);
+                    }
                 }
                 else if (JSON.stringify(msg.data.state) == 2) {
-                    show1;
-
+                    show1();
                 } else if (JSON.stringify(msg.data.state) == 3) {
-                    show3;
+                    show3();
                 } else if (msg.code = 10003) {
                     alert(msg.msg);
                 }
@@ -227,9 +215,6 @@ $(".submit2").bind("click", function sendMessage() {
     var phonename = $("#phone1").val();
     var idlogon = $('#idlogo1').val();
     $.ajax({
-
-
-
         type: "post",
         dataType: "json",
         url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=logon',
@@ -276,7 +261,7 @@ $("body").on("click", ".share_else", function share_a() {
         success: function (msg) {
             id = msg.data.id;
             if (msg.code == 10015) {
-                show3;
+                show3();
                 $(".h1_1").css("margin-top", "20px");
                 $(".submit2").css("width", "60%");
                 $(".yaoqing_span").html(JSON.stringify(msg.data.name) + ",邀请您参加");
@@ -320,11 +305,10 @@ $("body").on("click", ".success_share", function share_a() {
             $(".yaoqing_span").html(msg.data.name + ",邀请您参加");
             var url = $('url').value;
             window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + id);
-            // window.location.href = "invite.html?" + share_id;     // $(".share_else").attr("href", "http://192.168.4.53/index.php?m=invform&c=phone&a=index?" + share_id)
         },
         error: function () {
             return false;
         }
     });
-  
+
 });

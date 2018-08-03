@@ -583,7 +583,7 @@ p{word-wrap:break-word}
     }
     /* 分享预览页面 */
 #preview_box{
-    display: block;
+    display: none;
     padding: 0.1rem;
     margin: auto;
     height: 100%;

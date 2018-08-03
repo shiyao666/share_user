@@ -15,9 +15,7 @@ function funceach(index1) {
     });
 };
 var flbox_length = $(".fl1001_box").length;
-console.log(flbox_length);
-
-
+// 后台添加数据行
 function list_each(msg) {
     var list_array = [msg.data.id, msg.data.name, msg.data.start_time, msg.state.price, msg.state.city, msg.state.price];
     $(".fl1001_box").addClass("fl1001_box");
@@ -30,37 +28,47 @@ function list_each(msg) {
         fl1001_newid.append('<span class="fl1001_city" >' + this[4] + "</span>");
         fl1001_newid.append('<span class="fl1001_count" >' + this[5] + "</span>");
         fl1001_newid.append('<a href="#" class="data1001_dela">删除</a>');
-        fl1001_newid.attr('id', flbox_length++)
+        fl1001_newid.attr('id', 'data1001_del' + flbox_length++)
     })
 }
 // load登录页js
 
-var user_name = $('.user_name').val();
-var user_password = $('.password').val();
+
+var re = /^[\u4E00-\u9FA5a-zA-Z0-9\d^\s]+$/;
 function checkval(con) {
-    var re = /^[\u4E00-\u9FA5a-zA-Z0-9\d^\s]+$/;
     if (re.test(con)) {
         return true;
-    } else {
-        alert("用户名非法")
+    } else if (!(re.test(con))) {
+        alert("用户名或者密码非法")
         return false;
     }
 }
+var user_name = null;
+var user_password = null;
+// 登录校验
 $(".bm1001_submit").click(function () {
+    user_name = $('.user_name').val();
+    user_password = $('.password').val();
 
     if ($('.user_name').val().length == 0) {
-
-        alert("用户名格式不正确");
+        alert("用户名不能为空");
+        return false;
     } else if ($('.password').val().length == 0) {
         alert("密码不能为空");
-
+        return false;
     } else if ($('.user_name').val().length < 2 || $('.user_name').val().length > 10) {
         alert("用户名长度不合法");
-
+        return false;
     } else if ($(".password").val().length < 6 || $('.password').val().length > 18) {
         alert("密码长度不合法");
+        return false;
+    } else if (checkval(user_name)) {
+        
+    } else if (checkval(user_password)) {
 
     }
+
+
     $.ajax({
         type: 'post',
         dataType: 'json',
@@ -71,13 +79,11 @@ $(".bm1001_submit").click(function () {
         },
         success: function (msg) {
             if (msg.code == 10070) {
-                alert(msg.msg);
+
             } else if (msg.code = 10071) {
-                alert(msg.msg);
+
             } else if (msg.code = 10072) {
-
             }
-
         },
         error: function () {
             return false;
@@ -102,6 +108,7 @@ $(".fl1001_addinfo").click(function () {
 
 
 // 编辑页js
+// 编辑页格式随着input改变
 $("#logo_set").bind('input propertychange', function () {
     var title_top1 = $(this).val();
     $(".top_img").attr("src", title_top1);
@@ -152,7 +159,7 @@ $("#lines").bind('input propertychange', function () {
     var title_top1 = $(this).val();
     $(".left_content").html(title_top1);
 });
-
+// 图片后台获取修改
 $(".img_select").click(function () {
 
     $.ajax({
@@ -172,7 +179,7 @@ $(".img_select").click(function () {
         }
     })
 })
-$
+// 保存发送修改内容
 $("#save_revise").click(function () {
     var lead = $("#top_set").val();
     var price = $("#input_isfree").val();
@@ -213,8 +220,8 @@ $("#preview_back").click(function () {
 $("#data1001_back").click(function () {
     funceach(2);
 })
-
-$("#data1001_del").click(function () {
+// 删除数据表单
+$(".data1001_dela").click(function () {
     var click_id = $(this).attr('id');
     $.ajax({
         type: 'POST',
