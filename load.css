@@ -85,7 +85,7 @@ p{word-wrap:break-word}
     text-align: center;
  
 }
-.img_select{
+#img_select{
     float: right;
     width: 60px;
     height: 60px;
@@ -164,12 +164,12 @@ p{word-wrap:break-word}
         padding-left: 20px;
         line-height: 40px;
     }
-    @media screen and (max-width:768px){
+    /* @media screen and (max-width:768px){
     .fl1001_a3{
         width: 80%;
         float: left;
     }
-}
+} */
     .fl1001_addinfo{
         text-align: center;
         margin-top: 20px;
@@ -209,7 +209,7 @@ p{word-wrap:break-word}
     .fl1001_count{
         width: 80px;
     }
-    .fl1001_info,.fl1001_edi,.fl1001_look{
+    .fl1001_info,.fl1001_edi,.fl1001_look,.fl1001_del{
         width: 60px;
         border-radius: 6px;
     }

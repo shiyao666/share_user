@@ -1,3 +1,27 @@
+// 获取url以及数据的 array
+var address_data = new Array(["a", 2, "s"])
+// 获取token转化为cookie
+
+function setCookie(c_name, value, expiredays) {
+    var exdate = new Date()
+    exdate.setDate(exdate.getDate() + expiredays)
+    document.cookie = c_name + "=" + escape(value) +
+        ((expiredays == null) ? "" : "; expires=" + exdate.toGMTString())
+}
+
+
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=")
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1
+            c_end = document.cookie.indexOf(";", c_start)
+            if (c_end == -1) c_end = document.cookie.length
+            return unescape(document.cookie.substring(c_start, c_end))
+        }
+    }
+    return ""
+}
 // 展示隐藏common function
 var array = new Array();
 array[0] = $("#bm1001load");
@@ -16,10 +40,11 @@ function funceach(index1) {
 };
 var flbox_length = $(".fl1001_box").length;
 // 后台添加数据行
+var i = 0;
 function list_each(msg) {
-    var list_array = [msg.data.id, msg.data.name, msg.data.start_time, msg.state.price, msg.state.city, msg.state.price];
-    $(".fl1001_box").addClass("fl1001_box");
-    var fl1001_newid = $(".fl1001_box").attr("id", "flbox+" + flbox_length++)
+    var list_array = [msg.data.id, msg.data.image, msg.data.lead, msg.data.price, msg.data.start_time, msg.data.city];
+    $(".fl1001_box").clone("class", "fl1001_box");
+    var fl1001_newid = $(".fl1001_box").attr("id", "flbox+" + add_id);
     $.each(list_array, function () {
         fl1001_newid.append('<span class="fl1001_id" >' + this[0] + "</span>");
         fl1001_newid.append('<span class="fl1001_name" >' + this[1] + "</span>");
@@ -27,28 +52,30 @@ function list_each(msg) {
         fl1001_newid.append('<span class="fl1001_place" >' + this[3] + "</span>");
         fl1001_newid.append('<span class="fl1001_city" >' + this[4] + "</span>");
         fl1001_newid.append('<span class="fl1001_count" >' + this[5] + "</span>");
-        fl1001_newid.append('<a href="#" class="data1001_dela">删除</a>');
-        fl1001_newid.attr('id', 'data1001_del' + flbox_length++)
+        fl1001_newid.append('<a href="#" class="fl1001_info" >数据</a>').attr('id', add_id);
+        fl1001_newid.append('<a href="#" class="fl1001_edi"  >编辑</a>').attr('id', add_id);
+        fl1001_newid.append('<a href="#" class="fl1001_look" >预览</a>').attr('id', add_id);
+        fl1001_newid.append('<a href="#" class="fl1001_look" >删除</a>').attr('id', add_id);
+        console.log(this[0]);
     })
 }
+// 声明变量token
+var token = null;
 // load登录页js
-
-
-var re = /^[\u4E00-\u9FA5a-zA-Z0-9\d^\s]+$/;
+var re = /^[\u4E00-\u9FA5a-zA-Z0-9\d]+$/;
 function checkval(con) {
     if (re.test(con)) {
         return true;
     } else if (!(re.test(con))) {
-        alert("用户名或者密码非法")
         return false;
     }
 }
-var user_name = null;
-var user_password = null;
+// 声明创建id并赋值
+var add_id = 1;
 // 登录校验
 $(".bm1001_submit").click(function () {
-    user_name = $('.user_name').val();
-    user_password = $('.password').val();
+    var user_name = $('.user_name').val();
+    var user_password = $('.password').val();
 
     if ($('.user_name').val().length == 0) {
         alert("用户名不能为空");
@@ -56,41 +83,60 @@ $(".bm1001_submit").click(function () {
     } else if ($('.password').val().length == 0) {
         alert("密码不能为空");
         return false;
-    } else if ($('.user_name').val().length < 2 || $('.user_name').val().length > 10) {
+    } else if ($('.user_name').val().length < 2 || $('.user_name').val().length > 20) {
         alert("用户名长度不合法");
         return false;
     } else if ($(".password").val().length < 6 || $('.password').val().length > 18) {
         alert("密码长度不合法");
         return false;
-    } else if (checkval(user_name)) {
-        
-    } else if (checkval(user_password)) {
-
+    } else if (checkval(user_name) == false) {
+        alert("用户名不合法");
+        return false;
+    } else if (checkval(user_password) == false) {
+        alert("密码不合法");
+        return false;
     }
-
-
     $.ajax({
         type: 'post',
-        dataType: 'json',
-        url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
+        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=login_user ',
         data: {
             'user_name': user_name,
             'user_password': user_password
         },
         success: function (msg) {
-            if (msg.code == 10070) {
 
-            } else if (msg.code = 10071) {
-
-            } else if (msg.code = 10072) {
+            if (msg.code == 10075) {
+                'token' == msg.token;
+                funceach(2);
+                token = getCookie('token');
             }
-        },
-        error: function () {
+            else if (msg.code == 10076) {
+                alert(msg.msg)
+            }
+        }, error: function () {
             return false;
         }
     })
-
-})
+});
+// 当前页面为列表页
+$(document).ready(function () {
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=page_index',
+        data: {
+            'add_id': add_id
+        },
+        dataType: 'json',
+        success: function (msg) {
+            if (msg.code == 10029) {
+                list_each(msg);
+            }
+        }, error: function () {
+            return false;
+        }
+    });
+});
 
 // 表单列表js
 $(".fl1001_info").click(function () {
@@ -166,44 +212,61 @@ $(".img_select").click(function () {
         type: 'post',
         async: true,
         dataType: 'json',
-        url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
+        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=look_page',
         data: {
-            'image': 5
-
+            'add_id': add_id
         },
         success: function () {
-
+            if (msg.code == 10034) {
+                alert(msg.msg);
+            } else if (msg.code = 10036) {
+                alert(msg.msg);
+            }
         },
         error: function () {
             return false;
         }
     })
 })
+// $(document).bind(click, ".fl1001_del", function () {
+//     $.ajax({
+//         type:'POSt',
+//         dataType:'json',
+//         url:'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=delete_page',
+//         data:{
+
+//         }
+//     })
+// })
 // 保存发送修改内容
 $("#save_revise").click(function () {
+    var set_img = $("#img_select").val();
     var lead = $("#top_set").val();
     var price = $("#input_isfree").val();
     var start_time = $("#input_time").val();
     var adress = $("#input_place").val();
+    var logo_set = $("#logo_set").val();
+    var set_content = $("#set_content").val();
     funceach(2);
     $.ajax({
         type: 'post',
         async: true,
         dataType: 'json',
-        url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
+        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=index',
         data: {
-            'image': 5,
+            'image': logo_set,
             'lead': lead,
             'price': price,
             'start_time': start_time,
             'adress': adress,
-            'content': 3,
-            'bg_image': 5,
-            'add_id': 6
+            'content': set_content,
+            'bg_image': set_img,
         },
         success: function (msg) {
-            if (msg.data.state == 2) {
-
+            if (msg.code == 10034) {
+                alert(msg.msg);
+            } else if (msg.code == 10037) {
+                alert(msg.msg)
             }
         },
         error: function () {
@@ -226,7 +289,7 @@ $(".data1001_dela").click(function () {
     $.ajax({
         type: 'POST',
         dataType: 'json',
-        url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
+        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=index',
         data: {
             'del_id': click_id
         },
@@ -248,7 +311,7 @@ $(document).ready(function () {
     $.ajax({
         type: 'POSt',
         dataType: 'json',
-        url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
+        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=index',
         data: {
             'get': name
         },
