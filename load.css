@@ -160,9 +160,9 @@ p{word-wrap:break-word}
     }
     .fl1001_box span{
         float: left;
-        height: 40px;
+        height: 50px;
         padding-left: 20px;
-        line-height: 40px;
+        line-height: 50px;
     }
     /* @media screen and (max-width:768px){
     .fl1001_a3{
@@ -552,12 +552,14 @@ p{word-wrap:break-word}
         background: #e6e6e6;
        }
        .data1001_list span,.data1001_list a{
-  
-           text-align: center;
+          display: block;
+          height: 100px;
+         text-align: center;
 
        }
     .data1001_id,.data1001_names,.data1001_phone,.data1001_qiye,.data1001_work,.data1001_dela{
-       float: left;  
+       float: left;
+       height: 100px;  
     }
     .data1001_id{
         width: 80px;
