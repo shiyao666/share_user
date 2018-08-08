@@ -45,18 +45,30 @@ function ide_content(msg) {
     $(".span_3").html(msg.data.price);
     $(".left_content").html(msg.data.content);
 }
+function ide_input(msg) {
+    $("#top_set").val(msg.data.lead);
+    $("#input_time").val(msg.data.start_time);
+    $("#input_place").val(msg.data.address);
+    $("#set_content").val(msg.data.content);
+    $("#input_isfree").val(msg.data.price);
+}
 // 后台添加数据行
 var i = 0;
 var data1 = "数据";
 var ide1 = "编辑";
 var look1 = "预览";
 var delete1 = "删除";
+var page_id = null;
+var token = null;
 function list_each(msg) {
     var list_array = msg.data;
     var fl1001_newid = $(".fl1001_bigbox");
+
     $.each(list_array, function () {
+
         i++;
         if (i = list_array.length) {
+
             fl1001_newid.append('<div class="fl1001_box"><span class="fl1001_id">'
                 + this.id + "</span><span class='fl1001_name' >"
                 + this.lead + "</span><span class='fl1001_time' > "
@@ -68,16 +80,17 @@ function list_each(msg) {
                 + ide1 + "</a> <a href='#' class='fl1001_look' >"
                 + look1 + "</a> <a href='#' class='fl1001_del' >"
                 + delete1 + "</a></div>");
+
         }
 
-        console.log(this);
+
     })
 }
 var list_id = null;
 function list_each2(msg) {
     var j = 0;
     var list_array1 = msg.data;
-    var fl1001_newid1 = $(".data1001_content");
+    var fl1001_newid1 = $(".data1001_bigbox");
     $.each(list_array1, function () {
         j++;
         if (j = list_array1.length) {
@@ -97,12 +110,13 @@ $(".data1001back_div").click(function () {
 
 })
 // 当前页面为列表页
-// 表单列表js
+// 数据data表单列表js
+var form_id = null;
 function add_click_to_databutton() {
+    token = getCookie('tolen');
     $(".fl1001_info").click(function () {
         data_id = $(this).parent().children(".fl1001_id").html();
-        console.log(data_id);
-
+        token = getCookie('token');
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -114,10 +128,11 @@ function add_click_to_databutton() {
             success: function (msg) {
                 if (msg.code == 10041) {
                     funceach(1);
-                    if (list_each2(msg)) {
-                        return false;
-                    }
+                    $(".data1001_bigbox").empty();
                     list_each2(msg);
+                    add_click_to_databutton();
+                    delete_btn();
+                    form_id = data_id;
                 }
             },
             error: function () {
@@ -136,12 +151,14 @@ function ide_btn() {
             url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=look_page',
             data: {
                 'token': token,
-                'form_id': data_id
+                'page_id': data_id
             },
             success: function (msg) {
                 if (msg.code == 10035) {
                     funceach(4);
                     ide_content(msg);
+                    ide_input(msg);
+                    page_id = msg.data.id;
                 }
             },
             error: function () {
@@ -158,7 +175,7 @@ $(".fl1001_addinfo").click(function () {
     funceach(4);
 })
 // 声明变量token
-var token = null;
+
 // load登录页js
 var re = /^[\u4E00-\u9FA5a-zA-Z0-9\d]+$/;
 function checkval(con) {
@@ -208,7 +225,7 @@ $(".bm1001_submit").click(function () {
             if (msg.code == 10075) {
                 token = msg.data.token;
                 funceach(2);
-
+                setCookie("token", msg.data.token);
                 $.ajax({
                     type: 'POST',
                     async: true,
@@ -219,13 +236,14 @@ $(".bm1001_submit").click(function () {
                     dataType: 'json',
                     success: function (msg) {
                         if (msg.code == 10029) {
-                            setCookie(token);
                             list_each(msg);
                             add_click_to_databutton();
                             ide_btn();
                             look_btn();
                             delete_btn();
                             ide_content(msg);
+                            ide_input(msg);
+                            form_delete_btn();
                         }
                     }, error: function () {
                         return false;
@@ -300,6 +318,7 @@ $("#lines").bind('input propertychange', function () {
 // 预览按钮
 function look_btn() {
     $(".fl1001_look").click(function () {
+        token = getCookie('token');
         data_id = $(this).parent().children(".fl1001_id").html();
         $.ajax({
             type: 'POST',
@@ -307,12 +326,16 @@ function look_btn() {
             url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=look_page',
             data: {
                 'token': token,
-                'form_id': data_id
+                'page_id': data_id
             },
             success: function (msg) {
-                if (msg.code == 10041) {
-                    funceach(4);
-                    list_each2(msg);
+                if (msg.code == 10035) {
+                    funceach(5);
+                    $('.preview_lead').html(msg.data.lead);
+                    $('.preview_content').html(msg.data.content);
+                    $('.preview_span31').html(msg.data.start_time);
+                    $('.preview_span32').html(msg.data.city);
+                    $('.preview_span33').html(msg.data.price);
                 }
             },
             error: function () {
@@ -322,23 +345,79 @@ function look_btn() {
 
     })
 }
+
+$(document).ready(function () {
+    var token_index = getCookie('token');
+    $.ajax({
+        type: 'POSt',
+        dataType: 'json',
+        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=index',
+        data: {
+            'token': token_index
+        },
+        success: function (msg) {
+            if (msg.code == 10029) {
+                token = msg.data.token;
+                funceach(2);
+                list_each(msg);
+                add_click_to_databutton();
+                ide_btn();
+                look_btn();
+                delete_btn();
+                ide_content(msg);
+                ide_input(msg);
+                form_delete_btn();
+            }
+        },
+        error: function () {
+            return false;
+        }
+    })
+})
 // 删除按钮
-// 预览按钮
-function delete_btn() {
-    $(".fl1001_del").click(function () {
+function form_delete_btn() {
+    $(".fl1001_del").click(function login_func() {
+        token=getCookie('token');
         data_id = $(this).parent().children(".fl1001_id").html();
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=look_page',
+            url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=delete_page',
             data: {
                 'token': token,
-                'form_id': data_id
+                'page_id': data_id
             },
             success: function (msg) {
-                if (msg.code == 10041) {
-                    funceach(4);
-                    list_each2(msg);
+                if (msg.code == 10039) {
+
+
+                    $.ajax({
+                        type: 'POST',
+                        async: true,
+                        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=page_index',
+                        data: {
+                            'token': token,
+                        },
+                        dataType: 'json',
+                        success: function (msg) {
+                            if (msg.code == 10029) {
+                                $(".fl1001_bigbox").empty();
+                                list_each(msg);
+                                add_click_to_databutton();
+                                ide_btn();
+                                look_btn();
+                                delete_btn();
+                                ide_content(msg);
+                                ide_input(msg);
+                                form_delete_btn();
+                            }
+                        }, error: function () {
+                            return false;
+                        }
+
+                    });
+
+
                 }
             },
             error: function () {
@@ -375,6 +454,7 @@ $("#save_revise").click(function () {
             'adress': adress,
             'content': set_content,
             'bg_image': set_img,
+            'page_id': page_id
         },
         success: function (msg) {
             if (msg.code == 10034) {
@@ -400,24 +480,40 @@ $("#data1001_back").click(function () {
 // 删除数据表单
 function delete_btn() {
     $(".data1001_dela").click(function () {
-        data_id = $(this).parent().children(".fl1001_id").html();
-        console.log(data_id);
-
+        token = getCookie('token');
+        data_id = $(this).parent().children(".data1001_id").html();
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=delete_page',
+            url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=record_page_delete',
             data: {
                 'token': token,
-                'form_id': data_id
+                'user_id': data_id,
+                'form_id': form_id
             },
             success: function (msg) {
-                if (msg.code == 10041) {
-                    funceach(1);
-                    if (list_each2(msg)) {
-                        return false;
-                    }
-                    list_each2(msg);
+                if (msg.code == 10039) {
+                    // funceach(1);
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=record_page',
+                        data: {
+                            'token': token,
+                            'form_id': form_id
+                        },
+                        success: function (msg) {
+
+
+                            $(".data1001_bigbox").empty();
+                            list_each2(msg);
+
+
+                        },
+                        error: function () {
+                            return false;
+                        }
+                    })
                 }
             },
             error: function () {

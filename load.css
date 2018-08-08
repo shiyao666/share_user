@@ -158,7 +158,21 @@ p{word-wrap:break-word}
         margin-top: 20px;
         padding: 0px 20px 50px 20px;
     }
+    .fl1001_title{
+        display: block;
+        height: 100%;
+        margin: auto;
+        background: #e6e6e6;
+        margin-top: 20px;
+        padding: 0px 20px 50px 20px;
+    }
     .fl1001_box span{
+        float: left;
+        height: 50px;
+        padding-left: 20px;
+        line-height: 50px;
+    }
+    .fl1001_title span{
         float: left;
         height: 50px;
         padding-left: 20px;
@@ -191,6 +205,7 @@ p{word-wrap:break-word}
         margin-right: 20px;
         box-shadow:0px 0px 3px 3px rgba(0, 0, 0, 0.3);
     }
+    
     .fl1001_id{
         width: 120px;
     }
