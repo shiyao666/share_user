@@ -117,6 +117,10 @@ p{word-wrap:break-word}
     height: 50px;
     line-height: 50px;
 }
+.btn_submit{
+    float: right;
+    width: 50%;
+}
 /* 申请服务区页面 */
 #ser1001_content{
     display: none;

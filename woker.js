@@ -141,13 +141,19 @@ function add_click_to_databutton() {
         })
     })
 }
+
 // 编辑按钮
+var bg_image = null;
 function ide_btn() {
     $(".fl1001_edi").click(function () {
+
+
+        token = getCookie('token');
         data_id = $(this).parent().children(".fl1001_id").html();
         $.ajax({
             type: 'POST',
             dataType: 'json',
+            async: true,
             url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=look_page',
             data: {
                 'token': token,
@@ -159,7 +165,12 @@ function ide_btn() {
                     ide_content(msg);
                     ide_input(msg);
                     page_id = msg.data.id;
+                    bg_image = msg.data.bg_image;
+                    img = msg.data.image;
+                    $(".top_img").attr('src', image);
+                    $("#max_box").attr("background-image", 'url(' + bg_image + ')');
                 }
+
             },
             error: function () {
                 return false;
@@ -377,7 +388,7 @@ $(document).ready(function () {
 // 删除按钮
 function form_delete_btn() {
     $(".fl1001_del").click(function login_func() {
-        token=getCookie('token');
+        token = getCookie('token');
         data_id = $(this).parent().children(".fl1001_id").html();
         $.ajax({
             type: 'POST',
@@ -427,7 +438,38 @@ function form_delete_btn() {
 
     })
 }
+// 图片上传
 
+var image = '';
+function selectImage(file) {
+    if (!file.files || !file.files[0]) {
+        return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+        $('#image').src = evt.target.result;
+        image = evt.target.result;
+    }
+    reader.readAsDataURL(file.files[0]);
+}
+var file_bgimg = '';
+function selectImage2(file1) {
+    if (!file1.files || !file1.files[0]) {
+        return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+        $('#bg_img').src = evt.target.result;
+        file_bgimg = evt.target.result;
+    }
+    reader.readAsDataURL(file1.files[0]);
+}
+$('.file_img').change(function () {
+    selectImage(this);
+});
+$('.file_bgimg').change(function () {
+    selectImage2(this);
+});
 // 保存发送修改内容
 $("#save_revise").click(function () {
     data_id = $(this).parent().children(".fl1001_id").html();
@@ -441,19 +483,19 @@ $("#save_revise").click(function () {
     funceach(2);
     $.ajax({
         type: 'post',
-        async: true,
+        async: false,
         dataType: 'json',
         url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=updata_page',
         data: {
             'token': token,
             "form_id": data_id,
-            'image': logo_set,
+            'image': image,
             'lead': lead,
             'price': price,
             'start_time': start_time,
             'adress': adress,
             'content': set_content,
-            'bg_image': set_img,
+            'bg_image': file_bgimg,
             'page_id': page_id
         },
         success: function (msg) {
@@ -468,6 +510,7 @@ $("#save_revise").click(function () {
         }
     })
 });
+
 
 // 预览页面
 $("#preview_back").click(function () {
