@@ -127,12 +127,16 @@ function add_click_to_databutton() {
             },
             success: function (msg) {
                 if (msg.code == 10041) {
+                    alert(msg.msg);
                     funceach(1);
                     $(".data1001_bigbox").empty();
                     list_each2(msg);
                     add_click_to_databutton();
                     delete_btn();
                     form_id = data_id;
+                }
+                if (msg.code == 10042) {
+                    alert(msg.msg);
                 }
             },
             error: function () {
@@ -161,6 +165,7 @@ function ide_btn() {
             },
             success: function (msg) {
                 if (msg.code == 10035) {
+                    alert(msg.msg);
                     funceach(4);
                     ide_content(msg);
                     ide_input(msg);
@@ -182,8 +187,33 @@ function ide_btn() {
 $(".fl1001_look").click(function () {
     funceach(5);
 })
+// 新增
 $(".fl1001_addinfo").click(function () {
     funceach(4);
+    token = getCookie('token');
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        async: true,
+        url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=new_page',
+        data: {
+            'token': token,
+
+        },
+        success: function (msg) {
+
+            alert(msg.msg);
+            funceach(4);
+            ide_content(msg);
+            ide_input(msg);
+
+
+        },
+        error: function () {
+            return false;
+        }
+    })
+
 })
 // 声明变量token
 
@@ -234,6 +264,7 @@ $(".bm1001_submit").click(function () {
         },
         success: function (msg) {
             if (msg.code == 10075) {
+                alert(msg.msg);
                 token = msg.data.token;
                 funceach(2);
                 setCookie("token", msg.data.token);
@@ -247,6 +278,7 @@ $(".bm1001_submit").click(function () {
                     dataType: 'json',
                     success: function (msg) {
                         if (msg.code == 10029) {
+                            alert(msg.msg);
                             list_each(msg);
                             add_click_to_databutton();
                             ide_btn();
@@ -341,6 +373,7 @@ function look_btn() {
             },
             success: function (msg) {
                 if (msg.code == 10035) {
+                    alert(msg.msg)
                     funceach(5);
                     $('.preview_lead').html(msg.data.lead);
                     $('.preview_content').html(msg.data.content);
@@ -368,6 +401,7 @@ $(document).ready(function () {
         },
         success: function (msg) {
             if (msg.code == 10029) {
+                alert(msg.msg);
                 token = msg.data.token;
                 funceach(2);
                 list_each(msg);
@@ -400,7 +434,7 @@ function form_delete_btn() {
             },
             success: function (msg) {
                 if (msg.code == 10039) {
-
+                    alert(msg.msg)
 
                     $.ajax({
                         type: 'POST',
@@ -412,6 +446,7 @@ function form_delete_btn() {
                         dataType: 'json',
                         success: function (msg) {
                             if (msg.code == 10029) {
+                                alert(msg.msg)
                                 $(".fl1001_bigbox").empty();
                                 list_each(msg);
                                 add_click_to_databutton();
@@ -471,13 +506,14 @@ $('.file_bgimg').change(function () {
     selectImage2(this);
 });
 // 保存发送修改内容
-$("#save_revise").click(function () {
+$("#save_revise").click(function new_info() {
+    token = getCookie('token');
     data_id = $(this).parent().children(".fl1001_id").html();
     var set_img = $("#img_select").val();
     var lead = $("#top_set").val();
     var price = $("#input_isfree").val();
     var start_time = $("#input_time").val();
-    var adress = $("#input_place").val();
+    var address = $("#input_place").val();
     var logo_set = $("#logo_set").val();
     var set_content = $("#set_content").val();
     funceach(2);
@@ -493,7 +529,7 @@ $("#save_revise").click(function () {
             'lead': lead,
             'price': price,
             'start_time': start_time,
-            'adress': adress,
+            'address': address,
             'content': set_content,
             'bg_image': file_bgimg,
             'page_id': page_id
@@ -503,6 +539,33 @@ $("#save_revise").click(function () {
                 alert(msg.msg);
             } else if (msg.code == 10037) {
                 alert(msg.msg)
+            } else if (msg.code == 10032) {
+                alert(msg.msg);
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: 'http://192.168.4.53/index.php?m=invform&c=admin_page_user&a=page_index',
+                    data: {
+                        'token': token,
+                    },
+                    dataType: 'json',
+                    success: function (msg) {
+                        if (msg.code == 10029) {
+                            alert(msg.msg)
+                            $(".fl1001_bigbox").empty();
+                            list_each(msg);
+                            add_click_to_databutton();
+                            ide_btn();
+                            look_btn();
+                            delete_btn();
+                            ide_content(msg);
+                            ide_input(msg);
+                            form_delete_btn();
+                        }
+                    }, error: function () {
+                        return false;
+                    }
+                });
             }
         },
         error: function () {
@@ -537,6 +600,7 @@ function delete_btn() {
             success: function (msg) {
                 if (msg.code == 10039) {
                     // funceach(1);
+                    alert(msg.msg);
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
