@@ -259,14 +259,15 @@ body .loader_cogs__bottom div.bottom_hole {
 .max_box{
     display: none;
     background-image: url(yaoqing3.jpg);
-    background-repeat: repeat-y;
+    background-repeat: no-repeat;
     margin: auto;
     height: 100%;
-    background-size: cover;
+    background-size: contain;
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
+ 
 }
 .logo{
     padding:1rem;

@@ -23,7 +23,7 @@ function getCookie(c_name) {
     return ""
 }
 // global var
-var token = null;
+var token_user = null;
 var share_id = null;
 var id = null;
 var name = null;
@@ -70,100 +70,104 @@ function getcommon(msg, lead, lead, start_time, address, price, content, data, s
             $(".span_1").html(msg.data.start_time);
             $(".span_2").html(msg.data.address);
             $(".span_3").html(msg.data.price);
-            $(".content").html(msg.data.content)
+            $(".content").html(msg.data.content);
+            $(".h1_1").html(msg.data.lead);
         }
         if (msg.code == 10022) {
             $('.yaoqing_span').html(msg.data.lead);
             $(".span_1").html(msg.data.start_time);
             $(".span_2").html(msg.data.address);
             $(".span_3").html(msg.data.price);
-            $(".content").html(msg.data.content)
+            $(".content").html(msg.data.content);
+            $(".h1_1").html(msg.data.lead);
         }
     } else if (msg.data.state == 3) {
         // 状态为3 显示page3 隐藏其他
         show3();
     }
 }
-
+// var str = window.location.href.split("share_id=")[1].split("&")[0];
+// console.log(str);
 // 获取token发送给index
 $(document).ready(function () {
-    token = getCookie("token");
+    token_user = getCookie("token_user");
     var url3 = window.location.href;
-    var share_id = url3.split("share_id=")[1];
+    if (url3.indexOf("share_id=") != -1) {
+        var str = url3.split("share_id=")[1].split("&")[0];
+    }
+    var form_id = url3.split("form_id=")[1];
     // if条件判断是否存在share_id 
-    if (share_id !== null) {
+    if (token_user !== null && token_user !== undefined) {
         // 存在share_id
         $.ajax({
             type: 'POST',
             async: true,
             url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
             data: {
-                'token': token,
-                'share_id': share_id,
-                'form_id': 1,
+                'token_user': token_user,
+                'share_id': str,
+                'form_id': form_id
             },
             dataType: 'json',
             error: function () {
                 return false;
-            },
+            },  
             success: function (msg) {
+                if (msg.code == 3) {
+                    alert(msg.msg);
+                    window.history.go(-1);
+                }
                 id = msg.data.id;
                 name = JSON.stringify(msg.data.name);
                 getcommon(msg);
+                getCookie(msg.data.token_user);
                 $("#loading1").remove();
                 $(".max_box").css("display", "block");
-                setCookie("token", msg.data.token);
+                if (msg.data.token_user !== null && msg.data.token_user !== undefined) {
+                    setCookie("token_user", msg.data.token_user);
+                };
+                $('.yaoqing_span').html(msg.data.name + "邀请您参加");
+                $('.span_1').html(msg.data.start_time);
+                $('.span_2').html(msg.data.address);
+                $('.span_3').html(msg.data.price);
+                $(".logo_img1").attr('src', msg.data.image);
+                $(".max_box").css("background-image", 'url(' + msg.data.bg_image + ')');
             }
         });
-    } else {
-        // 不存在share_id
-        $.ajax({
-            type: 'POST',
-            async: true,
-            url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=index',
-            data: {
-                'token': token,
-                'share_id': share_id,
-                'form_id': 1
-            },
-            dataType: 'json',
-            error: function () {
-                return false;
-            },
-            success: function (msg) {
-                // if(msg.code==10002){}
-                id = msg.data.id;
-                name = JSON.stringify(msg.data.name);
-                getcommon(msg);
-                $("#loading1").remove();
-                $(".max_box").css("display", "block");
-                setCookie("token", msg.data.token);
-            }
-        });
-    }
 
+
+    }
 });
 //获取验证码
+
+
 $("body").on("click", ".ames", function click1() {
+    token_user = getCookie('token_user');
     var url1 = window.location.href;
-    var str = url1.split("share_id=")[1];
+    if (url1.indexOf("share_id=") !== -1) {
+        var str7 = url1.split("share_id=")[1].split("&")[0];
+    }
+    var str2 = url1.split("form_id=")[1];
     var phonename = $("#name1").val();
     var phone = $("#phone1").val();
-    var idlogon = $('#idlogo1').val();
-    // 获取token
-    token = getCookie("token");
+    // 获取token_user
+    token_user = getCookie("token_user");
     $.ajax({
         url: 'http://192.168.4.53/index.php?m=invform&c=phone&a=send_mes',
         type: 'POST',
         data: {
             'name': phonename,
             'phone': phone,
-            'token': token,
-            'share_id': str,
-            'form_id': 1
+            'token_user': token_user,
+            'share_id': str7,
+            'form_id': str2
         },
         dataType: 'json',
         success: function (msg) {
+            if (msg.code == 3) {
+                alert(msg.msg);
+                window.history.go(-1);
+            }
             if (msg.data != null) {
                 if (msg.data.state == 1) {
                     if (msg.code == 10004) {
@@ -199,10 +203,14 @@ $("body").on("click", ".ames", function click1() {
                         }
                     }, 1000);
                 alert(msg.msg)
-            } else if (token !== null) {
-                alert(msg.msg);
-                return false;
+
+            } else {
+                alert(msg.msg)
             }
+            // } else if (token_user !== null) {
+            //     alert(msg.msg);
+
+            // }
         },
         error: function (msg) {
             return false;
@@ -214,6 +222,11 @@ $("body").on("click", ".ames", function click1() {
 $(".submit2").bind("click", function sendMessage() {
     var phonename = $("#phone1").val();
     var idlogon = $('#idlogo1').val();
+    var url1 = window.location.href;
+    var str3 = url1.split("form_id=")[1];
+    if (url1.indexOf("share_id=") != -1) {
+        var str6 = url3.split("share_id=")[1].split("&")[0];
+    }
     $.ajax({
         type: "post",
         dataType: "json",
@@ -221,13 +234,18 @@ $(".submit2").bind("click", function sendMessage() {
         data: {
             "phone": phonename,
             "code": idlogon,
-            "token": token,
-            'form_id': 1
+            "token_user": token_user,
+            'form_id': str3,
+            'share_id': str6
         },
         error: function () {
             return false;
         },
         success: function (msg) {
+            if (msg.code == 3) {
+                alert(msg.msg);
+                window.history.go(-1);
+            }
             if (msg.code == 10009) {
                 id = msg.data.id;
                 name = JSON.stringify(msg.data.name);
@@ -245,7 +263,10 @@ $("body").on("click", ".share_else", function share_a() {
     var phone = $("#phone1").val();
     var idlogon = $('#idlogo1').val();
     var url2 = window.location.href;
-    var str1 = url2.split("id=")[1];
+    var str1 = url2.split("form_id=")[1];
+    if (url1.indexOf("share_id=") !== -1) {
+        var str8 = url1.split("share_id=")[1].split("&")[0];
+    }
     $.ajax({
         url: "http://192.168.4.53/index.php?m=invform&c=phone&a=share_others_one",
         type: "post",
@@ -255,10 +276,15 @@ $("body").on("click", ".share_else", function share_a() {
             'name': phonename,
             'idlogon': idlogon,
             'phone': phone,
-            'form_id': 1
+            'form_id': str1,
+            'share_id': str8
         },
         async: true,
         success: function (msg) {
+            if (msg.code == 3) {
+                alert(msg.msg);
+                window.history.go(-1);
+            }
             id = msg.data.id;
             if (msg.code == 10015) {
                 show3();
@@ -266,7 +292,7 @@ $("body").on("click", ".share_else", function share_a() {
                 $(".submit2").css("width", "60%");
                 $(".yaoqing_span").html(JSON.stringify(msg.data.name) + ",邀请您参加");
                 var url = $('url').value;
-                window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + msg.data.id);
+                window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + msg.data.id + "&form_id=" + str1);
             } else if (msg.code == 10014) {
                 alert(msg.msg);
                 $(".form2").hide();
@@ -286,7 +312,10 @@ $("body").on("click", ".success_share", function share_a() {
     var phone = $("#phone1").val();
     var idlogon = $('#idlogo1').val();
     var url2 = window.location.href;
-    var str1 = url2.split("id=")[1];
+    var str1 = url2.split("form_id=")[1];
+    if (url2.indexOf("share_id=") != -1) {
+        var str5 = url2.split("share_id=")[1].split("&")[0];
+    }
     $.ajax({
         url: "http://192.168.4.53/index.php?m=invform&c=phone&a=share_others_two",
         type: "post",
@@ -294,17 +323,22 @@ $("body").on("click", ".success_share", function share_a() {
         data: {
             'id': id,
             'name': phonename,
-            'form_id': 1
+            'form_id': str1,
+            'share_id': str5
         },
         async: false,
         success: function (msg) {
+            if (msg.code == 3) {
+                alert(msg.msg);
+                window.history.go(-1);
+            }
             $('.form2').hide();
             $('.form3').show();
             $(".h1_1").css("margin-top", "20px");
             $(".submit2").css("width", "60%")
             $(".yaoqing_span").html(msg.data.name + ",邀请您参加");
             var url = $('url').value;
-            window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + id);
+            window.history.pushState({}, 0, 'http://' + window.location.host + window.location.pathname + "?share_id=" + msg.data.id + "&form_id=" + str1);
         },
         error: function () {
             return false;
